@@ -9,8 +9,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -19,26 +20,41 @@ import java.util.ArrayList;
 public class MainActivity extends ActionBarActivity {
 
 
-    private ArrayList<Persona> listaPersonas = new ArrayList<>();
+    private Persona[] listaPersonas = new Persona[]{
+            new Persona("Yanci","Nerio","1234124","asdf@asdf.net",3,"femenino"),
+            new Persona("Yanci","Nerio","1234124","asdf@asdf.net",3,"femenino"),
+            new Persona("Yanci","Nerio","1234124","asdf@asdf.net",3,"femenino"),
+            new Persona("Yanci","Nerio","1234124","asdf@asdf.net",3,"femenino"),
+            new Persona("Yanci","Nerio","1234124","asdf@asdf.net",3,"femenino")
+    };
+
+    private ListView lstViewPersonas;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        listaPersonas.add(new Persona("Yanci","Nerio","1234124","asdf@asdf.net",3,"femenino"));
-        listaPersonas.add(new Persona("Yanci","Nerio","1234124","asdf@asdf.net",3,"femenino"));
-        listaPersonas.add(new Persona("Yanci","Nerio","1234124","asdf@asdf.net",3,"femenino"));
-        listaPersonas.add(new Persona("Yanci","Nerio","1234124","asdf@asdf.net",3,"femenino"));
-        listaPersonas.add(new Persona("Yanci","Nerio","1234124","asdf@asdf.net",3,"femenino"));
-
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
+
+
+        final AdaptadorPersona adp = new AdaptadorPersona(this, listaPersonas);
+
+        lstViewPersonas = (ListView) findViewById(R.id.lista_personas);
+
+        lstViewPersonas.setAdapter(adp);
+
+        lstViewPersonas.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Persona persona = (Persona) adp.getItem(i);
+            }
+        });
         return true;
     }
 
@@ -60,56 +76,39 @@ public class MainActivity extends ActionBarActivity {
 
     class AdaptadorPersona extends ArrayAdapter<Persona>{
 
-        Context context;
-        int layoutResourceId;
-        Persona data[]= null;
+        Activity context;
 
         public AdaptadorPersona(Context context,
-                                 int layoutResourceId, Persona[] data) {
-            super(context, layoutResourceId, data);
-            this.context = context;
-            this.layoutResourceId = layoutResourceId;
-            this.data = data;
+                                 Persona[] datos) {
+            super(context, R.layout.item_persona, datos);
         }
 
         public View getView (int position, View convertView, ViewGroup parent) {
-            View row = convertView;
-            PersonaHolder holder = null;
-            Persona persona = data[position];
-
-            if(row==null){
-                LayoutInflater inflater = ((Activity)context).getLayoutInflater();
-                row = inflater.inflate(layoutResourceId, parent, false);
-
-                holder = new PersonaHolder();
-                holder.viewNombre = (TextView) row.findViewById(R.id.nombre_text);
-                holder.viewApellido=(TextView) row.findViewById(R.id.apellido_text);
-                holder.viewEdad=(TextView) row.findViewById(R.id.edad_text);
-                holder.viewSexo=(TextView) row.findViewById(R.id.sexo_text);
-                holder.viewemail=(TextView) row.findViewById(R.id.email_text);
 
 
-            }
+            LayoutInflater inflater = LayoutInflater.from(getContext());
+            View item = inflater.inflate(R.layout.item_persona, null);
 
 
+            TextView viewNombre = (TextView) item.findViewById(R.id.nombre_text);
+            TextView viewApellido=(TextView) item.findViewById(R.id.apellido_text);
+            TextView viewdui = (TextView) item.findViewById(R.id.dui_text);
+            TextView viewEdad=(TextView) item.findViewById(R.id.edad_text);
+            TextView viewSexo=(TextView) item.findViewById(R.id.sexo_text);
+            TextView viewemail=(TextView) item.findViewById(R.id.email_text);
 
-            holder.viewNombre.setText(persona.getNombre());
-            holder.viewApellido.setText(persona.getApellido());
-            holder.viewdui.setText(persona.getDui());
-            holder.viewEdad.setText(persona.getEdad());
-            holder.viewSexo.setText(persona.getSexo());
-            holder.viewemail.setText(persona.getEmail());
 
+            viewNombre.setText(listaPersonas[position].getNombre());
+            viewApellido.setText(listaPersonas[position].getApellido());
+            viewdui.setText(listaPersonas[position].getDui());
+            viewEdad.setText(Integer.toString(listaPersonas[position].getEdad()));
+            viewSexo.setText(listaPersonas[position].getSexo());
+            viewemail.setText(listaPersonas[position].getEmail());
 
-            //holder.viewFoto.setImageResource();
-
-            return row;
+            return item;
         }
-
-
-
     }
-
+/*
     private class PersonaHolder {
         TextView viewNombre;
         TextView viewApellido;
@@ -118,5 +117,5 @@ public class MainActivity extends ActionBarActivity {
         TextView viewEdad;
         TextView viewSexo;
         ImageView viewFoto;
-    }
+    }*/
 }
