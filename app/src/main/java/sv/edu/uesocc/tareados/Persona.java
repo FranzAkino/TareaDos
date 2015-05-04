@@ -1,15 +1,19 @@
 package sv.edu.uesocc.tareados;
 
+import java.io.Serializable;
+
 /**
  * Created by akino on 04-27-15.
  */
-public class Persona {
+public class Persona implements Serializable{
     private String nombre;
     private String apellido;
     private String email;
     private String dui;
     private int edad;
     private String sexo;
+
+    public Persona(){};
 
     public Persona(String nombre, String apellido, String email, String dui, int edad, String sexo) {
         this.nombre = nombre;
