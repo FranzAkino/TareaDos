@@ -3,8 +3,6 @@ package sv.edu.uesocc.tareados;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.os.PersistableBundle;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,22 +16,16 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 
 public class MainActivity extends ActionBarActivity {
 
-    private Persona[] listaPersonas = new Persona[]{
-            new Persona("Yanci","Nerio","1234124","asdf@asdf.net",3,"femenino"),
-            new Persona("Yanci","Nerio","1234124","asdf@asdf.net",3,"femenino"),
-            new Persona("Yanci","Nerio","1234124","asdf@asdf.net",3,"femenino"),
-            new Persona("Yanci","Nerio","1234124","asdf@asdf.net",3,"femenino"),
-            new Persona("Yanci","Nerio","1234124","asdf@asdf.net",3,"femenino")
-    };
+    private ArrayList<Persona> lstPersonas = new ArrayList<>();
 
     private static final String TAG = "MyActivity";
 
     private ListView lstViewPersonas;
-
-
 
     AdaptadorPersona adp;
     private int indiceSeleccionado;
@@ -43,7 +35,13 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        adp = new AdaptadorPersona(this, listaPersonas);
+        lstPersonas.add( new Persona("Yanci","Nerio","1234124","asdf@asdf.net",3,"femenino"));
+        lstPersonas.add( new Persona("Yanci","Nerio","1234124","asdf@asdf.net",3,"femenino"));
+        lstPersonas.add( new Persona("Yanci","Nerio","1234124","asdf@asdf.net",3,"femenino"));
+        lstPersonas.add( new Persona("Yanci","Nerio","1234124","asdf@asdf.net",3,"femenino"));
+        lstPersonas.add( new Persona("Yanci","Nerio","1234124","asdf@asdf.net",3,"femenino"));
+
+        adp = new AdaptadorPersona(this, lstPersonas);
 
         lstViewPersonas = (ListView) findViewById(R.id.lista_personas);
 
@@ -80,9 +78,6 @@ public class MainActivity extends ActionBarActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
-
-
-
         return true;
     }
 
@@ -91,8 +86,9 @@ public class MainActivity extends ActionBarActivity {
         if(data==null)
             return;
         Persona persona = (Persona) data.getSerializableExtra("persona");
-        listaPersonas[indiceSeleccionado] = persona;
-        adp = new AdaptadorPersona(this,listaPersonas);
+
+        lstPersonas.set(indiceSeleccionado,persona);
+        adp = new AdaptadorPersona(this,lstPersonas);
         lstViewPersonas.setAdapter(adp);
     }
 
@@ -116,7 +112,7 @@ public class MainActivity extends ActionBarActivity {
         Activity context;
 
         public AdaptadorPersona(Context context,
-                                Persona[] datos) {
+                                ArrayList<Persona> datos) {
             super(context, R.layout.item_persona, datos);
         }
 
@@ -134,13 +130,15 @@ public class MainActivity extends ActionBarActivity {
             TextView viewSexo=(TextView) item.findViewById(R.id.sexo_text);
             TextView viewemail=(TextView) item.findViewById(R.id.email_text);
 
+            viewNombre.setText(lstPersonas.get(position).getNombre());
+            viewApellido.setText(lstPersonas.get(position).getApellido());
+            viewdui.setText(lstPersonas.get(position).getDui());
+            viewEdad.setText(Integer.toString(lstPersonas.get(position).getEdad())+" años ");
+            viewSexo.setText(lstPersonas.get(position).getSexo());
+            viewemail.setText(lstPersonas.get(position).getEmail());
 
-            viewNombre.setText(listaPersonas[position].getNombre());
-            viewApellido.setText(listaPersonas[position].getApellido());
-            viewdui.setText(listaPersonas[position].getDui());
-            viewEdad.setText(Integer.toString(listaPersonas[position].getEdad())+" años ");
-            viewSexo.setText(listaPersonas[position].getSexo());
-            viewemail.setText(listaPersonas[position].getEmail());
+
+
 
             return item;
         }

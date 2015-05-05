@@ -30,7 +30,6 @@
             android:id="@+id/foto"
             android:layout_width="wrap_content"
             android:layout_height="fill_parent" />
-
         </LinearLayout>
     <TextView
         android:id="@+id/email_text"

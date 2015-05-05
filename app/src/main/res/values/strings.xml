@@ -4,13 +4,11 @@
     <!--<string name="hello_world">Hello world!</string>-->
     <string name="action_settings">Settings</string>
     <string name="title_activity_editar_persona">Editar Persona</string>
-    <string name="Personas">Personas</string>
-
+    <string name="Personas">PERSONAS</string>
 
     <string-array name="sexos">
         <item >Femenino</item>
         <item >Masculino</item>
     </string-array>
-
 
 </resources>

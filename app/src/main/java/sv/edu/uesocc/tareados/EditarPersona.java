@@ -11,6 +11,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 
 public class EditarPersona extends ActionBarActivity {
@@ -68,23 +69,27 @@ public class EditarPersona extends ActionBarActivity {
         aceptar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(checkLleno(apellido))
-                    p.setApellido(apellido.getText().toString());
-                if(checkLleno(nombre))
-                    p.setNombre(nombre.getText().toString());
-                if(checkLleno(dui))
-                    p.setDui(dui.getText().toString());
-                if(checkLleno(edad))
-                    p.setEdad(Integer.valueOf(edad.getText().toString()));
-                if(checkLleno(email))
-                    p.setEmail(email.getText().toString());
-                p.setSexo(sexo.getSelectedItem().toString());
 
+                if(checkLleno(apellido)&checkLleno(nombre)&checkLleno(dui)&checkLleno(edad)&checkLleno(email)){
+                    if(checkLleno(apellido))
+                        p.setApellido(apellido.getText().toString());
+                    if(checkLleno(nombre))
+                        p.setNombre(nombre.getText().toString());
+                    if(checkLleno(dui))
+                        p.setDui(dui.getText().toString());
+                    if(checkLleno(edad))
+                        p.setEdad(Integer.valueOf(edad.getText().toString()));
+                    if(checkLleno(email))
+                        p.setEmail(email.getText().toString());
+                    p.setSexo(sexo.getSelectedItem().toString());
+                    Intent intent = new Intent();
+                    intent.putExtra("persona",p);
+                    setResult(RESULT_OK,intent);
+                    finish();
+                }else{
+                    Toast.makeText(getApplicationContext(),"Hay campos vacios",Toast.LENGTH_LONG).show();
+                }
 
-                Intent intent = new Intent();
-                intent.putExtra("persona",p);
-                setResult(RESULT_OK,intent);
-                finish();
             }
         });
     }
